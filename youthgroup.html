@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JNC / YOUTHGROUP</title>
+    <style>
+        /* ==========================================================================
+           1. TYPEFACE & VARIABLE ARCHITECTURE
+           ========================================================================= */
+        @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;700;900&display=swap');
+
+        :root {
+            --dark-bg: #0a0a0a;
+            --navy-blend: #0a1428;
+            --accent-gold: #f59e0b;
+            --laser-blue: #2563eb;
+            --card-dark: #111827;
+            --border-color: #1f2937;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--dark-bg);
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* ==========================================================================
+           2. CINEMATIC ORBIT LOADER (WITH SMOOTH ROTATION)
+           ========================================================================= */
+        #cinematic-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000000;
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .loader-center-text {
+            text-align: center;
+            color: #ffffff;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        #text-main {
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+
+        #text-sub {
+            font-size: 0.85rem;
+            opacity: 0;
+            color: #a1a1aa;
+            transition: opacity 0.4s ease;
+        }
+
+        #text-meta {
+            font-size: 0.75rem;
+            display: none;
+            color: #71717a;
+        }
+
+        #orbit-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 5;
+            transform-origin: center;
+        }
+
+        /* Sped up from 40s to 8s for a high-intensity spin effect */
+        #orbit-ring.is-spinning {
+            animation: spinRing 8s linear infinite;
+        }
+
+        @keyframes spinRing {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .ring-fragment {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 24px;
+            height: 32px;
+            background-color: #ffffff;
+            background-size: cover;
+            background-position: center;
+            filter: grayscale(100%) contrast(1.5);
+            opacity: 0;
+            /* Keeps inner images facing upright relative to the rotating parent layout */
+            transform: translate(-50%, -50%) rotate(var(--angle)) translateY(var(--radius)) rotate(calc(-1 * var(--angle)));
+            transition: opacity 0.3s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .triptych-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: 1.2fr 2fr 1.2fr;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 3;
+            transition: opacity 0.15s ease-in-out;
+        }
+
+        .triptych-overlay .panel {
+            background-size: cover;
+            background-position: center;
+            height: 100%;
+        }
+
+        .left-panel { 
+            background-color: #660000; 
+            background-image: url('https://images.unsplash.com/photo-1701303531836-0dc41690ed29?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); 
+            background-blend-mode: multiply;
+            filter: contrast(1.6) brightness(0.7);
+        }
+        
+        .center-panel { 
+            background-image: url('https://images.unsplash.com/photo-1591028650492-e105b7978882?q=80&w=687&auto=format&fit=crop'); 
+            filter: grayscale(100%) contrast(2.2) brightness(0.7);
+            border-left: 3px solid #000;
+            border-right: 3px solid #000;
+        }
+
+        .right-panel { 
+            background-image: url('https://images.unsplash.com/photo-1599499380255-ffaeb1b9824b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); 
+            filter: grayscale(100%) contrast(1.4);
+        }
+
+        #cinematic-loader.flash-active .triptych-overlay { opacity: 1; }
+        #cinematic-loader.flash-active #text-sub { display: none; }
+        #cinematic-loader.flash-active #text-meta { display: block; }
+        #cinematic-loader.flash-active .ring-fragment { filter: invert(1) contrast(3); }
+
+        /* ==========================================================================
+           3. DYNAMIC NAVIGATION BAR
+           ========================================================================= */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid #333;
+            font-weight: 900;
+            text-transform: uppercase;
+            z-index: 1000;
+            background: transparent;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: color 0.2s ease;
+        }
+
+        nav a:hover {
+            color: var(--accent-gold);
+        }
+
+        /* ==========================================================================
+           4. ANIMATED BRUTALIST HERO SECTIONS
+           ========================================================================= */
+        .buff-hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 5%;
+            overflow: hidden;
+            background: linear-gradient(to bottom, 
+                            rgba(10, 10, 10, 0.1) 0%, 
+                            rgba(10, 20, 40, 0.75) 50%, 
+                            var(--dark-bg) 95%), 
+                        url('https://images.unsplash.com/photo-1506869640319-fe1a24fd76dc?q=80&w=1470') no-repeat center top;
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        .hero-content {
+            position: relative;
+            width: 100%;
+            max-width: 1400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            z-index: 2;
+        }
+
+        .yellow-divider-bar {
+            position: relative;
+            width: 150vw;
+            height: 14px;
+            background: var(--accent-gold);
+            transform: rotate(-2deg) scaleX(0);
+            transform-origin: center;
+            margin-bottom: 45px;
+            animation: extendLine 0.8s cubic-bezier(0.85, 0, 0.15, 1) 0.5s forwards;
+        }
+
+        .est-tag {
+            background: var(--accent-gold);
+            color: var(--navy-blend);
+            font-size: 0.8rem;
+            font-weight: 900;
+            padding: 3px 12px;
+            border: 2px solid var(--navy-blend);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: absolute;
+            left: 50%;
+            opacity: 0;
+            transform: translate(-50%, -40px) scale(0.8);
+            animation: dropBadge 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 1.2s forwards;
+        }
+
+        .hero-title {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: clamp(3.5rem, 10vw, 8rem);
+            font-weight: 900;
+            line-height: 0.85;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: -4px;
+        }
+
+        .text-wrapper {
+            display: block;
+            overflow: hidden;
+            margin-bottom: 6px;
+        }
+
+        .hero-title .line {
+            display: block;
+            transform: translateY(110%);
+            opacity: 0;
+        }
+
+        .hero-content .text-wrapper:nth-child(2) .line {
+            animation: slideUpText 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1s forwards;
+        }
+        .hero-content .text-wrapper:nth-child(3) .line {
+            animation: slideUpText 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.15s forwards;
+        }
+
+        /* ==========================================================================
+           5. EDITORIAL WELCOME BLOCK
+           ========================================================================= */
+        #welcome-section {
+            background: #ffffff;
+            color: var(--navy-blend);
+            padding: 120px 8%;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 8px solid var(--navy-blend);
+        }
+
+        .structural-accent {
+            position: absolute;
+            top: 0;
+            right: 15%;
+            width: 4px;
+            height: 100%;
+            background: rgba(10, 20, 40, 0.05);
+        }
+
+        .welcome-badge {
+            align-self: flex-start;
+            transform: rotate(-2deg);
+            background: var(--accent-gold);
+            padding: 8px 24px;
+            box-shadow: 5px 5px 0px var(--navy-blend);
+            border: 3px solid var(--navy-blend);
+            width: fit-content;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
+
+        .welcome-title {
+            font-size: clamp(3rem, 8vw, 7rem);
+            font-family: 'Archivo Black', sans-serif;
+            font-weight: 900;
+            line-height: 0.85;
+            letter-spacing: -5px;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+        }
+
+        .welcome-grid {
+            display: flex;
+            gap: 60px;
+            flex-wrap: wrap;
+        }
+
+        .welcome-left {
+            flex: 1.2;
+            min-width: 320px;
+        }
+
+        .welcome-lead {
+            font-size: 1.6rem;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 25px;
+        }
+
+        .welcome-body {
+            font-size: 1.2rem;
+            line-height: 1.7;
+            color: #475569;
+            margin-bottom: 40px;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background: var(--navy-blend);
+            color: #ffffff;
+            padding: 20px 40px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            box-shadow: 6px 6px 0px var(--laser-blue);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 8px 8px 0px var(--laser-blue);
+        }
+
+        .welcome-right {
+            flex: 1;
+            min-width: 320px;
+            background: var(--navy-blend);
+            color: #ffffff;
+            padding: 50px;
+            position: relative;
+            box-shadow: 12px 12px 0px var(--accent-gold);
+            border: 4px solid var(--navy-blend);
+        }
+
+        /* ==========================================================================
+           6. THE COLLECTIVE SHOWCASE (GRID SYSTEM)
+           ========================================================================= */
+        #foundation {
+            padding: 100px 5%;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .collective-card {
+            background: var(--card-dark);
+            text-align: left;
+            padding: 80px 8%;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            border: 4px solid var(--accent-gold);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-badge {
+            background: var(--laser-blue);
+            color: #ffffff;
+            padding: 6px 16px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
+            align-self: flex-start;
+            transform: rotate(-1.5deg);
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.4);
+        }
+
+        .card-title {
+            font-size: clamp(2.5rem, 6vw, 5.5rem);
+            font-family: 'Archivo Black', sans-serif;
+            font-weight: 900;
+            line-height: 0.85;
+            letter-spacing: -4px;
+            text-transform: uppercase;
+        }
+
+        .card-desc {
+            color: #94a3b8;
+            font-size: 1.3rem;
+            max-width: 650px;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .quote-block {
+            border-left: 6px solid var(--laser-blue);
+            padding-left: 25px;
+            margin: 20px 0;
+            max-width: 750px;
+        }
+
+        .quote-text {
+            font-size: 1.35rem;
+            font-style: italic;
+            color: #e2e8f0;
+            line-height: 1.5;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .btn-secondary {
+            display: inline-block;
+            background: #ffffff;
+            color: var(--card-dark);
+            padding: 18px 36px;
+            text-decoration: none;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            align-self: flex-start;
+            border: 3px solid #ffffff;
+            box-shadow: 6px 6px 0px var(--laser-blue);
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background: transparent;
+            color: #ffffff;
+            box-shadow: 8px 8px 0px var(--accent-gold);
+        }
+
+        /* ==========================================================================
+           7. HARDWARE-ACCELERATED KEYFRAMES
+           ========================================================================= */
+        @keyframes extendLine { to { transform: rotate(-2deg) scaleX(1); } }
+        @keyframes dropBadge { to { opacity: 1; transform: translate(-50%, -24px) scale(1); } }
+        @keyframes slideUpText { to { transform: translateY(0); opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <div id="cinematic-loader">
+        <div class="loader-center-text">
+            <span id="text-main">YOU1H</span>
+            <span id="text-sub">MINISTRY</span>
+            <span id="text-meta">JESUS NAME CHURCH</span>
+        </div>
+        <div id="orbit-ring"></div>
+        <div class="triptych-overlay">
+            <div class="panel left-panel"></div>
+            <div class="panel center-panel"></div>
+            <div class="panel right-panel"></div>
+        </div>
+    </div>
+
+    <nav id="main-navbar">
+        <div>JNC // v.2026</div>
+        <div>
+            <a href="#foundation">Foundation</a>
+        </div>
+    </nav>
+
+    <header class="buff-hero">
+        <div class="hero-content">
+            <div class="yellow-divider-bar">
+                <span class="est-tag">EST. 2026</span>
+            </div>
+            <h1 class="hero-title">
+                <span class="text-wrapper"><span class="line">FAITH.</span></span>
+                <span class="text-wrapper"><span class="line">YOUTH MINISTRY.</span></span>
+            </h1>
+        </div>
+    </header>
+
+    <section id="welcome-section">
+        <div class="structural-accent"></div>
+        <div style="max-width: 1400px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px;">
+            <div class="welcome-badge">
+                Open Invitation // All Builders Welcome
+            </div>
+            <h2 class="welcome-title">
+                WELCOME TO <br><span style="color: var(--laser-blue);">THE MOVEMENT.</span>
+            </h2>
+            <div class="welcome-grid">
+                <div class="welcome-left">
+                    <p class="welcome-lead">
+                        This is your formal invitation to step off the sidelines and into intentional, structural purpose.
+                    </p>
+                    <p class="welcome-body">
+                        Whether you are searching for answers, looking to sharpen your gifts, or wanting to connect with a raw community of young visionaries, creators, and believers—you belong here. We don't do superficial filters. We build deep roots, unbreakable faith, and an engineered future on the ultimate bedrock.
+                    </p>
+                    <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+                        <a href="#connect" class="btn-primary">Plan Your Visit →</a>
+                        <span style="font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--laser-blue);">
+                            Every Sunday at 12:00 PM
+                        </span>
+                    </div>
+                </div>
+                <div class="welcome-right">
+                    <div style="position: absolute; top: 15px; left: 20px; font-family: monospace; font-size: 0.75rem; color: #64748b; letter-spacing: 2px;">
+                        REF // ROMANS.15.7
+                    </div>
+                    <p style="font-size: 1.5rem; font-style: italic; font-weight: 500; line-height: 1.5; margin: 20px 0; position: relative; z-index: 2;">
+                        "Therefore welcome one another as Christ has welcomed you, for the glory of God."
+                    </p>
+                    <hr style="border: none; height: 2px; background: var(--laser-blue); margin-bottom: 15px; width: 60px;">
+                    <span style="font-weight: 900; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem;">
+                        The Welcome Mandate
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main id="foundation">
+        <section class="collective-card">
+            <span class="card-badge">DOORS OPEN // YOU BELONG HERE</span>
+            <h2 class="card-title">
+                JOIN THE<br><span style="color: var(--accent-gold);">COLLECTIVE.</span>
+            </h2>
+            <p class="card-desc">
+                We are a raw community of young visionaries, creators, and builders stepping into our divine calling. No filters, no fluff—just real faith, deep structural purpose, and a crew that has your back.
+            </p>
+            <div class="quote-block">
+                <p class="quote-text">
+                    "Don’t let anyone look down on you because you are young, but set an example for the believers in speech, in conduct, in love, in faith and in purity."
+                </p>
+                <span style="color: var(--laser-blue); font-weight: 900; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 2px;">
+                    — 1 Timothy 4:12
+                </span>
+            </div>
+            <a href="contactus.html" class="btn-secondary">Pull Up This Week →</a>
+        </section>
+    </main>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // --- LOADER CONFIGURATION ---
+        const loader = document.getElementById('cinematic-loader');
+        const ringContainer = document.getElementById('orbit-ring');
+        const subText = document.getElementById('text-sub');
+        
+        const samples = [
+            'https://images.unsplash.com/photo-1711739648826-5a2c393a6a2e?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            'https://images.unsplash.com/photo-1711739648826-5a2c393a6a2e?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            'https://images.unsplash.com/photo-1711739648826-5a2c393a6a2e?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            'https://images.unsplash.com/photo-1711739648826-5a2c393a6a2e?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+        ];
+
+        const totalElements = 36; 
+        const fragments = [];
+
+        for (let i = 0; i < totalElements; i++) {
+            const frag = document.createElement('div');
+            frag.className = 'ring-fragment';
+            const angle = (360 / totalElements) * i;
+            frag.style.setProperty('--angle', `${angle}deg`);
+            frag.style.setProperty('--radius', '10px');
+            
+            const randomImg = samples[Math.floor(Math.random() * samples.length)];
+            frag.style.backgroundImage = `url('${randomImg}')`;
+            
+            ringContainer.appendChild(frag);
+            fragments.push(frag);
+        }
+
+        // --- TIMELINE SEQUENCER TRACKER ---
+        setTimeout(() => { fragments.forEach(f => f.style.opacity = '1'); }, 200);
+
+        setTimeout(() => {
+            subText.style.opacity = '1';
+            fragments.forEach(f => f.style.setProperty('--radius', '120px'));
+        }, 1000);
+
+        setTimeout(() => {
+            fragments.forEach(f => f.style.setProperty('--radius', '320px'));
+            // Start spinning smoothly right as the circle expands wide
+            ringContainer.classList.add('is-spinning');
+        }, 2000);
+
+        setTimeout(() => {
+            fragments.forEach(f => f.style.setProperty('--radius', '48vw'));
+        }, 3200);
+
+        setTimeout(() => { loader.classList.add('flash-active'); }, 3600);
+
+        setTimeout(() => {
+            loader.classList.remove('flash-active');
+            fragments.forEach(f => f.style.setProperty('--radius', '260px'));
+        }, 5000);
+
+        setTimeout(() => {
+            loader.style.opacity = '0';
+            setTimeout(() => { loader.style.display = 'none'; }, 600);
+        }, 6100);
+
+        // --- NAVIGATION INTERSECTION FILTER ---
+        const nav = document.getElementById('main-navbar');
+        if (nav) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 60) {
+                    nav.style.backgroundColor = "rgba(10, 20, 40, 0.95)";
+                    nav.style.backdropFilter = "blur(15px)";
+                    nav.style.webkitBackdropFilter = "blur(15px)";
+                    nav.style.borderColor = "var(--laser-blue)";
+                } else {
+                    nav.style.backgroundColor = "transparent";
+                    nav.style.backdropFilter = "none";
+                    nav.style.webkitBackdropFilter = "none";
+                    nav.style.borderColor = "#333";
+                }
+            });
+        }
+
+        // --- SCROLL-REVEAL OBSERVER ENGINE ---
+        const targetCards = document.querySelectorAll('.collective-card');
+        const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -40px 0px" };
+
+        const cardObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const card = entry.target;
+                    card.style.opacity = "1";
+                    card.style.transform = "translateY(0) scale(1)";
+                    cardObserver.unobserve(card);
+                }
+            });
+        }, observerOptions);
+
+        targetCards.forEach((card) => {
+            card.style.opacity = "0";
+            card.style.transform = "translateY(50px) scale(0.98)";
+            card.style.transition = "opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)";
+            cardObserver.observe(card);
+        });
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>!EVENT!</title>
+    <style>
+/* Full Screen Hero Setup */
+.downtown-hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    /* Replace with your church or modern architectural image */
+    background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.55)), 
+                url('https://images.unsplash.com/photo-1778507913536-5ea0311d27f5?q=80&w=1631&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center/cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #ffffff;
+    overflow: hidden;
+}
+
+/* Elegant Nav Bar */
+.downtown-nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 30px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.nav-logo {
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    line-height: 1.1;
+}
+
+.nav-logo span {
+    font-weight: 300;
+    font-size: 1rem;
+    letter-spacing: 4px;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+}
+
+.nav-links a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    opacity: 0.9;
+    transition: opacity 0.2s ease;
+}
+
+.nav-links a:hover {
+    opacity: 1;
+}
+
+/* White Solid Accent Button in Nav */
+.nav-links .btn-nav-accent {
+    background-color: #ffffff;
+    color: #000000;
+    padding: 10px 24px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1.5px;
+    border-radius: 2px;
+    opacity: 1;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.nav-links .btn-nav-accent:hover {
+    background-color: transparent;
+    color: #ffffff;
+    box-shadow: inset 0 0 0 1px #ffffff;
+}
+
+/* Centered Typography Elements */
+.hero-center-content {
+    text-align: center;
+    max-width: 850px;
+    padding: 0 20px;
+    margin-top: 60px; /* Balance for header absolute spacing */
+}
+
+.hero-center-content h1 {
+    font-size: 3.2rem;
+    font-weight: 400;
+    line-height: 1.25;
+    letter-spacing: -0.5px;
+    margin-bottom: 20px;
+}
+
+.hero-subtext {
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    color: #ffffff;
+    opacity: 0.8;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+}
+
+/* Elegant Ghost Button (From the screenshot) */
+.btn-discover {
+    display: inline-block;
+    color: #ffffff;
+    text-decoration: none;
+    border: 1.5px solid #ffffff;
+    padding: 12px 32px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    border-radius: 2px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-discover:hover {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* Responsive Scaling */
+@media (max-width: 768px) {
+    .downtown-nav { padding: 20px; }
+    .nav-links a:not(.btn-nav-accent) { display: none; } /* Standard collapse for mobile preview */
+    .hero-center-content h1 { font-size: 2.2rem; }
+}
+/* Smooth transition base for the nav */
+.downtown-nav {
+    transition: background-color 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
+                backdrop-filter 0.4s ease, 
+                padding 0.4s ease;
+}
+
+/* JavaScript triggers this class once user scrolls down 50px */
+.downtown-nav.nav-scrolled {
+    background-color: rgba(12, 13, 18, 0.85); /* Premium dark frosted look */
+    backdrop-filter: blur(10px); /* Modern blur effect */
+    padding: 15px 60px; /* Slims down the bar slightly when scrolling */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Container Framework */
+.story-events-container {
+    background-color: #0d0e12;
+    padding: 120px 60px;
+    color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Asymmetric 60/40 Split Grid Layout */
+.story-layout-grid {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 80px;
+    align-items: start;
+}
+
+/* Featured Story Left Column */
+.featured-story-block {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.story-image-wrapper {
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    border-radius: 4px;
+    background-color: #1a1b23; /* Placeholder dark fill */
+}
+
+.story-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.85;
+    transition: transform 0.5s ease;
+}
+
+.featured-story-block:hover .story-image-wrapper img {
+    transform: scale(1.03);
+}
+
+.story-tag {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #8a8d9a;
+    font-weight: 600;
+}
+
+.featured-story-block h2 {
+    font-size: 2.4rem;
+    font-weight: 400;
+    line-height: 1.2;
+    margin: 0;
+}
+
+.featured-story-block p {
+    color: #a0a3b0;
+    font-size: 1rem;
+    line-height: 1.7;
+    margin: 0;
+}
+
+.btn-story-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    align-self: flex-start;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 4px;
+    transition: border-color 0.2s ease;
+}
+
+.btn-story-link:hover {
+    border-color: #ffffff;
+}
+
+/* Right Column: Events Feed */
+.events-feed-block {
+    background-color: #12131a;
+    border: 1px solid #1e202c;
+    padding: 40px;
+    border-radius: 4px;
+}
+
+.feed-header {
+    margin-bottom: 35px;
+}
+
+.feed-header h3 {
+    font-size: 1.3rem;
+    font-weight: 400;
+    letter-spacing: 1px;
+    margin: 0 0 15px 0;
+}
+
+.feed-line {
+    width: 40px;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.feed-list {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* Individual Feed Row */
+.feed-item {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 20px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.feed-item:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.item-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
+}
+
+.item-date {
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.item-badge {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background-color: rgba(255, 255, 255, 0.08);
+    padding: 2px 6px;
+    border-radius: 2px;
+    color: #c4c7d0;
+}
+
+.item-details h4 {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0 0 6px 0;
+}
+
+.item-details p {
+    color: #8a8d9a;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Responsive Adaptive Setup */
+@media (max-width: 1024px) {
+    .story-layout-grid {
+        grid-template-columns: 1fr;
+        gap: 60px;
+    }
+    .story-events-container {
+        padding: 80px 30px;
+    }
+}
+/* Screen Overlay Core wrapper */
+#loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: #000000; /* Absolute black matching your screenshot vibe */
+  z-index: 99999;            /* Strict enforcement over navigation headers */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), 
+              visibility 0.6s ease;
+}
+
+/* Forces SVG layout limits */
+.main-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  max-width: 700px; /* Prevents SVG scaling aggressively huge */
+  padding: 20px;
+}
+
+.loader {
+  width: 100%;
+}
+
+.trace-bg {
+  stroke: #16171e; /* Stealthy underlying trace path lines */
+  stroke-width: 1.8;
+  fill: none;
+}
+
+.trace-flow {
+  stroke-width: 1.8;
+  fill: none;
+  stroke-dasharray: 40 400;
+  stroke-dashoffset: 438;
+  filter: drop-shadow(0 0 6px currentColor);
+  animation: flow 3s cubic-bezier(0.5, 0, 0.9, 1) infinite;
+}
+
+/* Circuit Color Matrices */
+.yellow { stroke: #ffea00; color: #ffea00; }
+.blue   { stroke: #00ccff; color: #00ccff; }
+.green  { stroke: #00ff15; color: #00ff15; }
+.purple { stroke: #9900ff; color: #9900ff; }
+.red    { stroke: #ff3300; color: #ff3300; }
+
+@keyframes flow {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* JavaScript Triggered Class */
+#loading-screen.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+/* --- Secondary Row Properties --- */
+.secondary-events-row {
+    margin-top: 100px;
+    padding-top: 60px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    grid-column: 1 / -1; 
+}
+
+.secondary-row-header {
+    margin-bottom: 45px;
+}
+
+.secondary-row-header h3 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin: 0 0 8px 0;
+    letter-spacing: 1px;
+}
+
+.secondary-row-header p {
+    color: #8a8d9a;
+    font-size: 1.05rem;
+    margin: 0;
+}
+
+.triple-card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.event-story-card {
+    background-color: #12131a;
+    border: 1px solid #1e202c;
+    padding: 35px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.event-story-card:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-4px);
+}
+
+.card-number {
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.1);
+    font-family: serif;
+    line-height: 1;
+}
+
+.card-meta h4 {
+    font-size: 1.35rem;
+    font-weight: 500;
+    margin: 0 0 6px 0;
+}
+
+.card-date {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #ffea00;
+    font-weight: 600;
+}
+
+.event-story-card p {
+    color: #8a8d9a;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* --- Widget Box Component Styles --- */
+.timeline-widget-box {
+    grid-column: 1 / -1;
+    margin-top: 60px;
+    background-color: #12131a;
+    border: 1px solid #1e202c;
+    border-radius: 4px;
+    padding: 40px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+}
+
+.widget-metric {
+    flex: 1;
+    text-align: center;
+}
+
+.metric-num {
+    font-size: 3.5rem; /* Massive bold metric number output */
+    font-weight: 300;
+    color: #ffffff;
+    line-height: 1;
+    display: block;
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+}
+
+.metric-label {
+    color: #8a8d9a;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin: 0;
+    font-weight: 600;
+}
+
+.widget-divider {
+    width: 1px;
+    height: 50px;
+    background-color: #1e202c;
+}
+
+/* --- Responsive Media Viewport Overrides --- */
+@media (max-width: 968px) {
+    .triple-card-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .timeline-widget-box {
+        flex-direction: column;
+        padding: 40px 30px;
+        gap: 40px;
+    }
+    .widget-divider {
+        width: 60px;
+        height: 1px;
+    }
+}
+/* ==========================================
+   UNIFIED PREMIUM CONTACT SECTION STYLING
+   ========================================== */
+.downtown-contact {
+    background-color: #0d0e12; /* Matches main event background */
+    padding: 120px 60px;
+    color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.contact-wrapper {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr; /* Symmetric split layout */
+    gap: 80px;
+    align-items: start;
+}
+
+/* Left Column: Consistent Info Typography */
+.contact-tag {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    color: #8a8d9a;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 15px;
+}
+
+.contact-info h2 {
+    font-size: 3.2rem;
+    font-weight: 400;
+    line-height: 1.15;
+    margin: 0 0 25px 0;
+    letter-spacing: -1px;
+}
+
+.contact-desc {
+    color: #8a8d9a;
+    font-size: 1.15rem;
+    line-height: 1.75;
+    margin-bottom: 50px;
+}
+
+.info-details {
+    display: flex;
+    gap: 60px;
+}
+
+.info-block h5 {
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #ffffff;
+    margin: 0 0 12px 0;
+    font-weight: 700;
+}
+
+.info-block p {
+    color: #a0a3b0;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Right Column: Unified Form Box Structure */
+.contact-form-container {
+    background-color: #12131a; /* Exact match to your dark layout card background */
+    border: 1px solid #1e202c;     /* Exact match to your layout card borders */
+    padding: 45px;
+    border-radius: 4px;
+}
+
+.downtown-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-group label {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #8a8d9a;
+    font-weight: 600;
+}
+
+/* Contained Input Box Styling matching your UI blocks */
+.downtown-form input,
+.downtown-form textarea {
+    background-color: #16171e; /* Solid background container fill */
+    border: 1px solid #222430;
+    padding: 14px 18px;
+    color: #ffffff;
+    font-size: 1.05rem;
+    font-family: inherit;
+    border-radius: 4px;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.downtown-form input:focus,
+.downtown-form textarea:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.3);
+    background-color: #1a1b24; /* Subtle glow shift on typing focus */
+}
+
+/* Premium Navigation Button Link Action */
+.btn-submit {
+    align-self: flex-start;
+    background-color: transparent;
+    color: #ffffff;
+    border: 1.5px solid #ffffff;
+    padding: 14px 40px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    margin-top: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-submit:hover {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN ADAPTATIONS
+   ========================================== */
+@media (max-width: 1024px) {
+    .contact-wrapper {
+        grid-template-columns: 1fr;
+        gap: 60px;
+    }
+    .downtown-contact {
+        padding: 80px 30px;
+    }
+}
+
+@media (max-width: 600px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    .info-details {
+        flex-direction: column;
+        gap: 30px;
+    }
+    .contact-form-container {
+        padding: 30px 20px;
+    }
+}
+/* Container Button adjustments */
+.btn-submit {
+    align-self: flex-start;
+    background-color: transparent;
+    color: #ffffff;
+    border: 1.5px solid #ffffff;
+    padding: 14px 40px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    margin-top: 10px;
+    
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    /* Note: Change to 'visible' if you want them to fly across the WHOLE screen, 
+       or keep 'hidden' if you want them trapped inside the button frame! */
+    overflow: hidden; 
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-submit:hover {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.plane-swarm-container {
+    position: relative;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+}
+
+/* The single stationary plane sitting inside the button initially */
+.original-plane {
+    transition: transform 0.3s ease;
+}
+.btn-submit:hover .original-plane {
+    transform: scale(0); /* Hides original plane so the swarm takes over */
+}
+
+/* The generated swarm elements */
+.swarmed-plane {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    opacity: 0;
+    animation: swarmFly 0.8s ease-out forwards;
+}
+
+/* The chaotic flight path animation */
+@keyframes swarmFly {
+    0% {
+        transform: translate(0, 0) scale(0.5) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        /* JS custom properties (--x, --y, --rot) will handle individual paths */
+        transform: translate(var(--x), var(--y)) scale(var(--scale)) rotate(var(--rot));
+        opacity: 0;
+    }
+}
+    </style>
+</head>
+<body>
+    <!-- Hero Banner Section -->
+<header class="downtown-hero">
+    <!-- Premium Navigation Bar -->
+    <nav class="downtown-nav">
+        <div class="nav-logo">
+            JESUS NAME<br><span>CHURCH</span>
+        </div>
+        <div class="nav-links">
+            <a href="About.html">About Us</a>
+        </div>
+    </nav>
+
+    <!-- Main Central Statement -->
+    <div class="hero-center-content">
+        <h1>A community rooted in faith, contemporary in vision.</h1>
+        <p class="hero-subtext">WEEKLY SERVICES | SUNDAYS AT 12:00 AM</p>
+        <a href="#events" class="btn-discover">FIND OUT MORE</a>
+    </div>
+</header>
+<!-- Story & Events Section -->
+<section id="events" class="story-events-container">
+    <div class="story-layout-grid">
+        
+        <!-- Left Side: The Main Featured Story -->
+        <div class="featured-story-block">
+            <div class="story-image-wrapper">
+                <img src="https://images.unsplash.com/photo-1522158637959-30385a09e0da?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Our Community Journey">
+            </div>
+            <div class="story-content">
+                <span class="story-tag">Our Core Story</span>
+                <h2>Built on Faith, Moving in Community</h2>
+                <p>Every gathering at Jesus Name Church is a chapter in a larger story. We don't just host dates on a calendar—we build spaces where faith intersects with real life, creativity, and purposeful connection right here in the community.</p>
+                <a href="#" class="btn-story-link">Read Our Journal <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <!-- Right Side: The Upcoming Chapters (Events Feed) -->
+        <div class="events-feed-block">
+            <div class="feed-header">
+                <h3>Upcoming Chapters</h3>
+                <div class="feed-line"></div>
+            </div>
+
+            <div class="feed-list">
+                <!-- Event Item 1 -->
+                <div class="feed-item">
+                    <div class="item-meta">
+                        <span class="item-date">1</span>
+                        <span class="item-badge">Special</span>
+                    </div>
+                    <div class="item-details">
+                        <h4>Youth Worship Night</h4>
+                        <p>A dynamic night of live music, message, and community built for the next generation.</p>
+                    </div>
+                </div>
+
+                <!-- Event Item 2 -->
+                <div class="feed-item">
+                    <div class="item-meta">
+                        <span class="item-date">2</span>
+                        <span class="item-badge">Weekly</span>
+                    </div>
+                    <div class="item-details">
+                        <h4>Midweek Bible Study</h4>
+                        <p>Deep dive interactive discussion walking chapter-by-chapter through the scriptures.</p>
+                    </div>
+                </div>
+
+                <!-- Event Item 3 -->
+                <div class="feed-item">
+                    <div class="item-meta">
+                        <span class="item-date">3</span>
+                        <span class="item-badge">Gathering</span>
+                    </div>
+                    <div class="item-details">
+                        <h4>Night Community BBQ</h4>
+                        <p>Connecting together right after service with food, fellowship, and outdoor games.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<div id="loading-screen">
+  <div class="main-container">
+    <div class="loader">
+      <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="chipGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#2d2d2d"></stop>
+            <stop offset="100%" stop-color="#0f0f0f"></stop>
+          </linearGradient>
+
+          <linearGradient id="textGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#eeeeee"></stop>
+            <stop offset="100%" stop-color="#888888"></stop>
+          </linearGradient>
+
+          <linearGradient id="pinGradient" x1="1" y1="0" x2="0" y2="0">
+            <stop offset="0%" stop-color="#bbbbbb"></stop>
+            <stop offset="50%" stop-color="#888888"></stop>
+            <stop offset="100%" stop-color="#555555"></stop>
+          </linearGradient>
+        </defs>
+
+        <g id="traces">
+          <path d="M100 100 H200 V210 H326" class="trace-bg"></path>
+          <path d="M100 100 H200 V210 H326" class="trace-flow purple"></path>
+
+          <path d="M80 180 H180 V230 H326" class="trace-bg"></path>
+          <path d="M80 180 H180 V230 H326" class="trace-flow blue"></path>
+
+          <path d="M60 260 H150 V250 H326" class="trace-bg"></path>
+          <path d="M60 260 H150 V250 H326" class="trace-flow yellow"></path>
+
+          <path d="M100 350 H200 V270 H326" class="trace-bg"></path>
+          <path d="M100 350 H200 V270 H326" class="trace-flow green"></path>
+
+          <path d="M700 90 H560 V210 H474" class="trace-bg"></path>
+          <path d="M700 90 H560 V210 H474" class="trace-flow blue"></path>
+
+          <path d="M740 160 H580 V230 H474" class="trace-bg"></path>
+          <path d="M740 160 H580 V230 H474" class="trace-flow green"></path>
+
+          <path d="M720 250 H590 V250 H474" class="trace-bg"></path>
+          <path d="M720 250 H590 V250 H474" class="trace-flow red"></path>
+
+          <path d="M680 340 H570 V270 H474" class="trace-bg"></path>
+          <path d="M680 340 H570 V270 H474" class="trace-flow yellow"></path>
+        </g>
+
+        <rect x="330" y="190" width="140" height="100" rx="20" ry="20" fill="url(#chipGradient)" stroke="#222" stroke-width="3" filter="drop-shadow(0 0 6px rgba(0,0,0,0.8))"></rect>
+
+        <g>
+          <rect x="322" y="205" width="8" height="10" fill="url(#pinGradient)" rx="2"></rect>
+          <rect x="322" y="225" width="8" height="10" fill="url(#pinGradient)" rx="2"></rect>
+          <rect x="322" y="245" width="8" height="10" fill="url(#pinGradient)" rx="2"></rect>
+          <rect x="322" y="265" width="8" height="10" fill="url(#pinGradient)" rx="2"></rect>
+        </g>
+
+        <g>
+          <rect x="470" y="205" width="8" height="10" fill="url(#pinGradient)" rx="2"></rect>
+          <rect x="470" y="225" width="8" height="10" fill="url(#pinGradient)" rx="2"></rect>
+          <rect x="470" y="245" width="8" height="10" fill="url(#pinGradient)" rx="2"></rect>
+          <rect x="470" y="265" width="8" height="10" fill="url(#pinGradient)" rx="2"></rect>
+        </g>
+
+        <text x="400" y="242" font-family="'Segoe UI', Roboto, Arial, sans-serif" font-weight="bold" letter-spacing="1.5px" font-size="20" fill="url(#textGradient)" text-anchor="middle" alignment-baseline="middle">
+          JESUS
+        </text>
+
+        <circle cx="100" cy="100" r="5" fill="#333"></circle>
+        <circle cx="80" cy="180" r="5" fill="#333"></circle>
+        <circle cx="60" cy="260" r="5" fill="#333"></circle>
+        <circle cx="100" cy="350" r="5" fill="#333"></circle>
+
+        <circle cx="700" cy="90" r="5" fill="#333"></circle>
+        <circle cx="740" cy="160" r="5" fill="#333"></circle>
+        <circle cx="720" cy="250" r="5" fill="#333"></circle>
+        <circle cx="680" cy="340" r="5" fill="#333"></circle>
+      </svg>
+    </div>
+  </div>
+</div>
+<section id="events" class="story-events-container">
+    <div class="story-layout-grid">
+        
+        <div class="featured-story-block">
+            <div class="story-image-wrapper">
+                <img src="https://images.unsplash.com/photo-1778507913536-5ea0311d27f5?q=80&w=1631&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Our Community Journey">
+            </div>
+            <div class="story-content">
+                <span class="story-tag">Our Core Story</span>
+                <h2>Built on Faith, Moving in Community</h2>
+                <p>Every gathering at Jesus Name Church is a chapter in a larger story. We don't just host dates on a calendar—we build spaces where faith intersects with real life, creativity, and purposeful connection right here in the community.</p>
+                <a href="#" class="btn-story-link">Read Our Journal <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <div class="events-feed-block">
+            <div class="feed-header">
+                <h3>Upcoming Chapters</h3>
+                <div class="feed-line"></div>
+            </div>
+
+            <div class="feed-list">
+                <div class="feed-item">
+                    <div class="item-meta">
+                        <span class="item-date">4</span>
+                        <span class="item-badge">Special</span>
+                    </div>
+                    <div class="item-details">
+                        <h4>Youth Worship Morning</h4>
+                        <p>A dynamic night of live music, message, and community built for the next generation.</p>
+                    </div>
+                </div>
+
+                <div class="feed-item">
+                    <div class="item-meta">
+                        <span class="item-date">5</span>
+                        <span class="item-badge">Weekly</span>
+                    </div>
+                    <div class="item-details">
+                        <h4>New Bible Study</h4>
+                        <p>Deep dive interactive discussion walking chapter-by-chapter in the scriptures.</p>
+                    </div>
+                </div>
+
+                <div class="feed-item">
+                    <div class="item-meta">
+                        <span class="item-date">6</span>
+                        <span class="item-badge">Community</span>
+                    </div>
+                    <div class="item-details">
+                        <h4>Men's Breakfast Gather</h4>
+                        <p>Morning fellowship, breakfast, and targeted group discussions focused on faith leadership.</p>
+                    </div>
+                </div>
+
+                <div class="feed-item">
+                    <div class="item-meta">
+                        <span class="item-date">7</span>
+                        <span class="item-badge">Gathering</span>
+                    </div>
+                    <div class="item-details">
+                        <h4>Summer Community BBQ</h4>
+                        <p>Connecting together right after service with food, fellowship, and outdoor games.</p>
+                    </div>
+                </div>
+
+                <div class="feed-item">
+                    <div class="item-meta">
+                        <span class="item-date">8</span>
+                        <span class="item-badge">Creative</span>
+                    </div>
+                    <div class="item-details">
+                        <h4>Worship & Arts Workshop</h4>
+                        <p>A collaborative training session for musicians, vocalists, and multimedia creatives.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="secondary-events-row">
+            <div class="secondary-row-header">
+                <h3>Extended Timeline</h3>
+                <p>More ways to gather, connect, and grow throughout the season.</p>
+            </div>
+
+            <div class="triple-card-grid">
+                <div class="event-story-card">
+                    <span class="card-number">06</span>
+                    <div class="card-meta">
+                        <h4>Prayer & Intercession</h4>
+                        <span class="card-date">9</span>
+                    </div>
+                    <p>A quiet, focused evening of unified corporate prayer and worship in the main sanctuary.</p>
+                </div>
+
+                <div class="event-story-card">
+                    <span class="card-number">07</span>
+                    <div class="card-meta">
+                        <h4>Welcome Home Track</h4>
+                        <span class="card-date">10</span>
+                    </div>
+                    <p>New to Jesus Name Church? Join us for a brief lunch layout to discover our vision, mission, and structure.</p>
+                </div>
+
+                <div class="event-story-card">
+                    <span class="card-number">08</span>
+                    <div class="card-meta">
+                        <h4>Global Missions Sunday</h4>
+                        <span class="card-date">11</span>
+                    </div>
+                    <p>Highlighting our regional and international community partners with special guest updates.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-widget-box">
+            <div class="widget-metric">
+                <span class="metric-num">30+</span>
+                <p class="metric-label">Active Global Ministries</p>
+            </div>
+            <div class="widget-divider"></div>
+            <div class="widget-metric">
+                <span class="metric-num">10k+</span>
+                <p class="metric-label">Lives Impacted Regionally</p>
+            </div>
+            <div class="widget-divider"></div>
+            <div class="widget-metric">
+                <span class="metric-num">100%</span>
+                <p class="metric-label">Rooted Biblical Foundation</p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section id="contact-section" class="downtown-contact">
+    <div class="contact-wrapper">
+        <div class="contact-info">
+            <span class="contact-tag">Get In Touch</span>
+            <h2>We’d love to welcome you in person.</h2>
+            <p class="contact-desc">Whether you have questions about our ministries, want to join a community group, or simply need someone to pray with you—reach out anytime.</p>
+            
+            <div class="info-details">
+                <div class="info-block">
+                    <h5>Location</h5>
+                    <p>UAE Abu dhabi<br>hamdan bim mohammed st, Occasion Cake shop al ain Building FL 2</p>
+                </div>
+                <div class="info-block">
+                    <h5>Inquiries</h5>
+                    <p>jetheraabando@gmail.com<br>+971-1585808667</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="contact-form-container">
+            <form class="downtown-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Your Name</label>
+                        <input type="text" required placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" required placeholder="john@example.com">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Subject</label>
+                    <input type="text" required placeholder="Planning a visit / Prayer request">
+                </div>
+                <div class="form-group">
+                    <label>Message</label>
+                    <textarea rows="5" required placeholder="How can we help you?"></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Send Message</button>
+            </form>
+        </div>
+    </div>
+</section>
+<button type="submit" class="btn-submit" id="contact-submit-btn">
+    Send Message 
+    <span class="plane-swarm-container" id="swarm-container">
+        <!-- JS will inject 67 planes right here -->
+        <i class="fas fa-paper-plane original-plane"></i>
+    </span>
+</button>
+<script>
+  // Smooth scroll and navigation background shift
+  document.addEventListener('DOMContentLoaded', function() {
+    const navBar = document.querySelector('.downtown-nav');
+    
+    // 1. Shift Navbar on Scroll
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 50) {
+        navBar.classList.add('nav-scrolled');
+      } else {
+        navBar.classList.remove('nav-scrolled');
+      }
+    });
+
+    // 2. Smooth Scroll for Action Button
+    const discoverBtn = document.querySelector('.btn-discover');
+    if (discoverBtn) {
+      discoverBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        const targetSection = document.querySelector(targetId);
+        
+        if (targetSection) {
+          targetSection.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    }
+  });
+  document.addEventListener('DOMContentLoaded', function() {
+    const feedItems = document.querySelectorAll('.feed-item');
+    
+    // Set up intersection observer for scroll-based animations
+    const observerOptions = {
+      root: null,
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const entryObserver = new IntersectionObserver(function(entries, observer) {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          // Apply staggered micro-delays to rows
+          setTimeout(() => {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }, index * 120);
+          
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    // Apply starting transition styles and observe
+    feedItems.forEach(item => {
+      item.style.opacity = '0';
+      item.style.transform = 'translateY(15px)';
+      item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      entryObserver.observe(item);
+    });
+  });
+  
+  
+  window.addEventListener('load', function() {
+    const loaderScreen = document.getElementById('loading-screen');
+    
+    if (loaderScreen) {
+      // Holds the circuit loader on screen for exactly 5 seconds
+      setTimeout(function() {
+        loaderScreen.classList.add('fade-out');
+      }, 5000); 
+    }
+  });
+document.addEventListener("DOMContentLoaded", () => {
+    const submitBtn = document.getElementById("contact-submit-btn");
+    const swarmContainer = document.getElementById("swarm-container");
+
+    submitBtn.addEventListener("mouseenter", () => {
+        // Prevent accidental multi-spawns if they hover back and forth quickly
+        if (swarmContainer.querySelectorAll(".swarmed-plane").length > 0) return;
+
+        const totalPlanes = 67;
+
+        for (let i = 0; i < totalPlanes; i++) {
+            // 1. Create a fresh font-awesome plane icon
+            const plane = document.createElement("i");
+            plane.className = "fas fa-paper-plane swarmed-plane";
+
+            // 2. Generate random flight mathematics variables
+            const distanceX = Math.floor(Math.random() * 350) + 100; // Travels right between 100px and 450px
+            const distanceY = Math.floor(Math.random() * 300) - 150; // Sweeps up or down randomly (-150px to 150px)
+            const rotation = Math.floor(Math.random() * 90) - 30;    // Tilts direction (-30deg to 60deg)
+            const scale = (Math.random() * 0.6 + 0.4).toFixed(2);   // Random sizing mix (tiny to large)
+            const delay = (Math.random() * 0.3).toFixed(2);         // Staggers launches so they don't leave all at once
+
+            // 3. Inject variables straight into the element CSS custom properties
+            plane.style.setProperty("--x", `${distanceX}px`);
+            plane.style.setProperty("--y", `${distanceY}px`);
+            plane.style.setProperty("--rot", `${rotation}deg`);
+            plane.style.setProperty("--scale", scale);
+            plane.style.style.animationDelay = `${delay}s`;
+
+            // 4. Set random color variations if desired (optional: defaults to text color balance)
+            if(Math.random() > 0.5) {
+                plane.style.color = "#ffea00"; // Splashes matching microchip yellow into the mix occasionally
+            }
+
+            swarmContainer.appendChild(plane);
+
+            // 5. Clean up the DOM after the animation loops end
+            setTimeout(() => {
+                plane.remove();
+            }, 1200);
+        }
+    });
+});
+</script>
+</body>
+</html>
